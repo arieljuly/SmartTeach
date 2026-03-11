@@ -31,9 +31,7 @@
 
             <!-- Right side buttons: Login + Signup -->
             <div class="hidden md:flex items-center space-x-3">
-                <a href="#login-modal" id="login-btn-nav" class="text-gray-700 hover:text-indigo-600 font-medium px-4 py-2 transition flex items-center gap-2">
-                    <i class="fas fa-user-circle"></i> Log in
-                </a>
+               <a href="{{ route('show.login') }}" class="block py-2 text-indigo-600 font-medium"><i class="fas fa-sign-in-alt mr-2"></i>Log in</a>
                 <a href="#try-now" class="bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-700 transition shadow-md hover:shadow-indigo-200 text-sm font-semibold flex items-center gap-2">
                     <i class="fas fa-chalkboard-teacher"></i> Sign up free
                 </a>
@@ -63,70 +61,6 @@
         </div>
     </div>
 </nav>
-
-<!-- LOGIN MODAL (hidden by default, appears when clicking login) -->
-<div id="login-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center" style="display: none;">
-    <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-8 shadow-2xl relative animate-float">
-        <!-- close button -->
-        <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-            <i class="fas fa-times text-xl"></i>
-        </button>
-        
-        <div class="text-center mb-6">
-            <div class="text-3xl font-bold bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent mb-2">Welcome back</div>
-            <p class="text-gray-600">Sign in to your Smart Teach account</p>
-        </div>
-
-        <!-- login form (demo only) -->
-        <form class="space-y-5" onsubmit="event.preventDefault(); alert('Demo: This would redirect to dashboard. In production, connect to your auth system.');">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Email address</label>
-                <input type="email" placeholder="teacher@school.edu" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                <input type="password" placeholder="••••••••" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" >
-            </div>
-            <div class="flex items-center justify-between">
-                <label class="flex items-center">
-                    <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-                <a href="#" class="text-sm text-indigo-600 hover:underline">Forgot password?</a>
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition font-semibold shadow-lg">
-                Sign in <i class="fas fa-arrow-right ml-2"></i>
-            </button>
-        </form>
-
-        <!-- divider -->
-        <div class="relative my-6">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-200"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-white text-gray-500">or continue with</span>
-            </div>
-        </div>
-
-        <!-- social login options -->
-        <div class="grid grid-cols-2 gap-3">
-            <button class="flex items-center justify-center gap-2 border border-gray-300 py-2.5 rounded-xl hover:bg-gray-50 transition">
-                <i class="fab fa-google text-red-500"></i>
-                <span class="text-sm font-medium">Google</span>
-            </button>
-            <button class="flex items-center justify-center gap-2 border border-gray-300 py-2.5 rounded-xl hover:bg-gray-50 transition">
-                <i class="fab fa-microsoft text-blue-600"></i>
-                <span class="text-sm font-medium">Microsoft</span>
-            </button>
-        </div>
-
-        <p class="text-center text-sm text-gray-500 mt-6">
-            Don't have an account? 
-            <a href="#try-now" class="text-indigo-600 font-medium hover:underline" onclick="document.getElementById('close-modal').click();">Start free trial</a>
-        </p>
-    </div>
-</div>
 
 <!-- HERO section – strong teacher value prop -->
 <section id="home" class="pt-28 pb-20 overflow-hidden relative">
