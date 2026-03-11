@@ -55,7 +55,7 @@
             <a href="#contact" class="block py-2 text-gray-700 hover:text-indigo-600">Contact</a>
             <!-- mobile login & signup -->
             <div class="border-t border-gray-100 pt-3 mt-2 space-y-2">
-                <a href="#login-modal" class="block py-2 text-indigo-600 font-medium"><i class="fas fa-sign-in-alt mr-2"></i>Log in</a>
+                <a href="{{ route('show.login') }}" class="block py-2 text-indigo-600 font-medium"><i class="fas fa-sign-in-alt mr-2"></i>Log in</a>
                 <a href="#try-now" class="block py-2 bg-indigo-600 text-white text-center rounded-full">Sign up free</a>
             </div>
         </div>
@@ -340,8 +340,8 @@
             <div>
                 <h4 class="font-semibold mb-4">Account</h4>
                 <ul class="space-y-2 text-gray-400 text-sm">
-                    <li><a href="#login-modal" class="hover:text-white flex items-center gap-2" onclick="openLoginModal(); return false;"><i class="fas fa-sign-in-alt text-indigo-400"></i> Log in</a></li>
-                    <li><a href="#try-now" class="hover:text-white">Sign up</a></li>
+                    <li><a href="{{ route('show.login') }}" class="hover:text-white flex items-center gap-2"><i class="fas fa-sign-in-alt text-indigo-400"></i> Log in</a></li>
+                    <li><a href="{{ route('show.register') }}" class="hover:text-white">Sign up</a></li>
                     <li><a href="#" class="hover:text-white">Dashboard</a></li>
                 </ul>
             </div>
@@ -364,68 +364,49 @@
     </div>
 </section>
 
-<!-- Mobile menu JS, smooth scroll, and login modal toggle -->
 <script>
     // Mobile menu toggle
     const mobileBtn = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
+    
     if (mobileBtn) {
         mobileBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+        
+        // Close mobile menu when a link is clicked
         mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
         });
     }
     
-    // Smooth scroll
+    // Smooth scroll for anchor links only (not for regular links)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            // Don't prevent if it's the login modal link (we handle separately)
-            if (this.getAttribute('href') === '#login-modal') return;
+            // Only prevent default for actual anchor links on the same page
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 
-    // Login modal functionality
-    const modal = document.getElementById('login-modal');
-    const loginBtns = document.querySelectorAll('#login-btn-nav, a[href="#login-modal"]');
-    const closeBtn = document.getElementById('close-modal');
-
-    function openLoginModal() {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // prevent background scrolling
-    }
-
-    function closeLoginModal() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    loginBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openLoginModal();
-        });
-    });
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeLoginModal);
-    }
-
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeLoginModal();
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            if (!mobileBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
         }
     });
 
-    // Close modal with Escape key
+    // Close mobile menu on escape key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-            closeLoginModal();
+        if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
         }
     });
 </script>

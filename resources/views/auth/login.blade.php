@@ -94,7 +94,7 @@ echo "CURL_CA_BUNDLE env: " . (getenv('CURL_CA_BUNDLE') ?: 'not set') . "\n<br>"
 
             <p class="text-center text-sm text-gray-600">
                 Don't have an account? 
-                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="{{ route('show.register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
                     Sign up for free
                 </a>
             </p>

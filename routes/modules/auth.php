@@ -14,7 +14,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
     
     // Registration routes (optional)
-    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('show.register');
     Route::post('/register', [AuthController::class, 'register'])->name('store.register');
 });
 
