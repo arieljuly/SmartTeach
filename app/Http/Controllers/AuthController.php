@@ -10,6 +10,7 @@ use App\Enum\UserRole;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -18,8 +19,23 @@ class AuthController extends Controller
      */
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        try {
+            Log::info('Starting Google redirect');
+            
+            // Socialite will automatically use the options from config/services.php
+            return Socialite::driver('google')->redirect();
+            
+        } catch (\Exception $e) {
+            Log::error('Google redirect failed:', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            
+            return redirect()->route('show.login')->with('error', 'Unable to connect to Google. Please try again.');
+        }
     }
+
 
     /**
      * Handle Google callback
@@ -33,7 +49,6 @@ class AuthController extends Controller
             
             Log::info('Google user retrieved', ['email' => $googleUser->email]);
             
-            // Check if user exists with this email
             $user = User::where('email', $googleUser->email)->first();
             
             if (!$user) {
@@ -80,9 +95,10 @@ class AuthController extends Controller
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
             ]);
             
-            return redirect()->route('show.login')->with('error', 'Google authentication failed: ' . $e->getMessage());
+            return redirect()->route('show.login')->with('error', 'Google authentication failed. Please try again.');
         }
     }
 
@@ -98,30 +114,43 @@ class AuthController extends Controller
     /**
      * Handle login request
      */
-        public function login(Request $request)
+    public function login(Request $request)
     {
         try {
-            Log::info('Login attempt started', ['email' => $request->email]);
+        Log::info('Login attempt started', ['email' => $request->email]);
+        
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        Log::info('Credentials validated');
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
             
-            $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
+            $user = Auth::user();
+            Log::info('Login successful', [
+                'user_id' => $user->user_id,
+                'role' => $user->role,
+                'email' => $user->email,
+                'role_value' => $user->role // Add this
             ]);
-
-            Log::info('Credentials validated');
-
-            if (Auth::attempt($credentials, $request->boolean('remember'))) {
-                $request->session()->regenerate();
-                
-                $user = Auth::user();
-                Log::info('Login successful', [
-                    'user_id' => $user->user_id,
-                    'role' => $user->role,
-                    'email' => $user->email
-                ]);
-                
-                return $this->redirectBasedOnRole();
-            }
+            
+            // TEMPORARY: Dump the user role and die
+            dd([
+                'user_role' => $user->role,
+                'role_type' => gettype($user->role),
+                'admin_value' => UserRole::ADMIN->value,
+                'teacher_value' => UserRole::TEACHER->value,
+                'user_value' => UserRole::USER->value,
+                'comparison_admin' => $user->role === UserRole::ADMIN->value,
+                'comparison_teacher' => $user->role === UserRole::TEACHER->value,
+                'comparison_user' => $user->role === UserRole::USER->value,
+            ]);
+            
+            return $this->redirectBasedOnRole();
+        }
 
             Log::info('Login failed - invalid credentials', ['email' => $request->email]);
             
@@ -136,12 +165,10 @@ class AuthController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
             
-            // Return a user-friendly error
             return back()->with('error', 'An error occurred during login. Please try again.');
         }
     }
 
-    
 
     /**
      * Show registration form
@@ -164,25 +191,24 @@ class AuthController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'in:admin,teacher,user'],
         ]);
 
         Log::info('Registration validation passed');
 
+        // Set default role to 'user' using the enum
         $user = User::create([
             'first_name' => $validated['first_name'],
             'middle_name' => $validated['middle_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
+            'role' => UserRole::USER->value, // Default role is 'user'
         ]);
 
         Log::info('User created', ['user_id' => $user->user_id ?? $user->id]);
 
         Auth::login($user);
 
-        // Redirect based on role
         return $this->redirectBasedOnRole();
     }
 
@@ -208,24 +234,22 @@ class AuthController extends Controller
         
         if (!$user) {
             Log::error('No user found in redirectBasedOnRole');
-            return redirect()->route('show.login');
+            return redirect()->route('login');
         }
+        
+        $roleValue = $user->role instanceof UserRole ? $user->role->value : $user->role;
         
         Log::info('Redirecting user based on role', [
             'user_id' => $user->user_id,
-            'role' => $user->role
+            'role' => $roleValue
         ]);
         
-        // Compare with enum values
-        if ($user->role === UserRole::ADMIN->value) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role === UserRole::TEACHER->value) {
-            return redirect()->route('teacher.dashboard');
-        } elseif ($user->role === UserRole::USER->value) {
-            return redirect()->route('user.dashboard');
-        }
-        
-        // Default fallback
-        return redirect('/dashboard');
+        // Use match expression with the string value
+        return match($roleValue) {
+            UserRole::ADMIN->value => redirect()->route('admin.dashboard'),
+            UserRole::TEACHER->value => redirect()->route('teacher.dashboard'),
+            UserRole::USER->value => redirect()->route('user.dashboard'),
+            default => redirect('/dashboard'),
+        };
     }
 }

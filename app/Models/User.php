@@ -1,57 +1,59 @@
 <?php
+// app/Models/User.php
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enum\UserRole;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $primaryKey = 'user_id';
+    
     protected $fillable = [
         'first_name',
         'middle_name',
         'last_name',
         'email',
-        'email_verified_at',
         'password',
+        'google_id',
+        'avatar',
         'role',
-        'google_id', // Add this
-        'avatar', // Add this
+        'email_verified_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'role' => UserRole::class, // This casts the role to UserRole enum
+    ];
+
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Check if user has any of the given roles
      */
-    protected function casts(): array
+    public function hasAnyRole(array $roles): bool
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'role' => UserRole::class, // This should be: 'role' => \App\Enum\UserRole::class
-        ];
+        foreach ($roles as $role) {
+            // If $role is a UserRole enum, compare with $this->role (which is also a UserRole enum)
+            if ($this->role === $role) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole(UserRole $role): bool
+    {
+        return $this->role === $role;
     }
 }

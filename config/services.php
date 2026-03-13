@@ -38,6 +38,13 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
+        
+        'options' => [
+            'http_client' => [
+                'verify' => 'C:\\xampp\\apache\\bin\\curl-ca-bundle.crt',
+                'timeout' => 30,
+            ],
+        ],
     ],
 
 ];
