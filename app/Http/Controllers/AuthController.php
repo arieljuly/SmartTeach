@@ -137,18 +137,6 @@ class AuthController extends Controller
                 'role_value' => $user->role // Add this
             ]);
             
-            // TEMPORARY: Dump the user role and die
-            dd([
-                'user_role' => $user->role,
-                'role_type' => gettype($user->role),
-                'admin_value' => UserRole::ADMIN->value,
-                'teacher_value' => UserRole::TEACHER->value,
-                'user_value' => UserRole::USER->value,
-                'comparison_admin' => $user->role === UserRole::ADMIN->value,
-                'comparison_teacher' => $user->role === UserRole::TEACHER->value,
-                'comparison_user' => $user->role === UserRole::USER->value,
-            ]);
-            
             return $this->redirectBasedOnRole();
         }
 

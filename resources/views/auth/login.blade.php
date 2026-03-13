@@ -6,6 +6,21 @@
     <title>Login - Smart Teach</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .password-toggle:hover {
+            color: #4F46E5;
+        }
+    </style>
 </head>
 <body class="font-sans antialiased bg-gradient-to-br from-indigo-50 to-purple-50">
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -71,10 +86,16 @@ echo "CURL_CA_BUNDLE env: " . (getenv('CURL_CA_BUNDLE') ?: 'not set') . "\n<br>"
                         <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus 
                                class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                     </div>
+                    
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input id="password" name="password" type="password" required 
-                               class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <div class="relative">
+                            <input id="password" name="password" type="password" required 
+                                   class="appearance-none relative block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent pr-12">
+                            <span class="password-toggle" onclick="togglePassword('password', this)">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -100,5 +121,22 @@ echo "CURL_CA_BUNDLE env: " . (getenv('CURL_CA_BUNDLE') ?: 'not set') . "\n<br>"
             </p>
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId, element) {
+            const input = document.getElementById(inputId);
+            const icon = element.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -3,9 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-// Guest routes
-Route::middleware('guest')->group(function () {
-    // Login routes
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('show.login');
     Route::post('/login', [AuthController::class, 'login'])->name('store.login');
     
@@ -16,7 +13,6 @@ Route::middleware('guest')->group(function () {
     // Registration routes (optional)
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('show.register');
     Route::post('/register', [AuthController::class, 'register'])->name('store.register');
-});
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {

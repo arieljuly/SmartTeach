@@ -385,7 +385,6 @@
     // Smooth scroll for anchor links only (not for regular links)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            // Only prevent default for actual anchor links on the same page
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {

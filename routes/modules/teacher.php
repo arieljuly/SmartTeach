@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Teacher\{
+use App\Http\Controllers\{
     DashboardController
 };
 
 Route::middleware(['role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'teacherDashboard'])->name('dashboard');
     
 });
