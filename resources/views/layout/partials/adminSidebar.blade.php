@@ -19,13 +19,12 @@
     <div class="py-4 overflow-y-auto h-[calc(100vh-4rem)] scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-500">
         <ul class="space-y-1 px-2">
             <!-- Dashboard -->
-            <li>
+            <li class="relative">
+                @if(request()->routeIs('admin.dashboard'))
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
+                @endif
                 <a href="{{ route('admin.dashboard') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.dashboard'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
+                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
@@ -34,13 +33,12 @@
             </li>
             
             <!-- User Administration -->
-            <li>
+            <li class="relative">
+                @if(request()->routeIs('admin.users*'))
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
+                @endif
                 <a href="{{ route('admin.users.administration') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.users*') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.users*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
+                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group {{ request()->routeIs('admin.users*') ? 'bg-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
@@ -49,43 +47,26 @@
             </li>
             
             <!-- Lesson Plan Module -->
-            <li>
+            <li class="relative">
+                @if(request()->routeIs('admin.lesson-plans*') || request()->routeIs('admin.lessons*'))
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
+                @endif
                 <a href="{{ route('admin.lesson-plans.index') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.lessons*') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.lessons*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
+                class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group {{ request()->routeIs('admin.lesson-plans*') || request()->routeIs('admin.lessons*') ? 'bg-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                     <span class="text-sm font-medium">Lesson Plan Module</span>
                 </a>
             </li>
-            
-            <!-- PDF Text Extraction Module -->
-            <li>
-                <a href="{{ route('admin.extraction.pdf') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.pdf*') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.pdf*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span class="text-sm font-medium">PDF Text Extraction</span>
-                </a>
-            </li>
-            
+                        
             <!-- AI Processing Module -->
-            <li>
+            <li class="relative">
+                @if(request()->routeIs('admin.ai*'))
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
+                @endif
                 <a href="{{ route('admin.ai.aiProcess') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.ai*') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.ai*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
+                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group {{ request()->routeIs('admin.ai*') ? 'bg-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -94,13 +75,13 @@
             </li>
             
             <!-- Output Management Module (with submenu) -->
-            <li x-data="{ open: {{ request()->routeIs('admin.extraction.output*') ? 'true' : 'false' }} }">
+            <li x-data="{ open: {{ request()->routeIs('admin.extraction.output*') ? 'true' : 'false' }} }" class="relative">
+                <!-- Active Indicator for parent when any output route is active -->
+                @if(request()->routeIs('admin.extraction.output*'))
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
+                @endif
                 <button @click="open = !open" 
-                        class="flex items-center w-full px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative">
-                    <!-- Active Indicator for parent when any output route is active -->
-                    @if(request()->routeIs('admin.extraction.output*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
+                        class="flex items-center w-full px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
@@ -117,6 +98,12 @@
                 
                 <!-- Output Management Submenu (PDF to Video & PDF to Audio only) -->
                 <div x-show="open" x-transition class="pl-11 pr-2 mt-1 space-y-1">
+                    <a href="{{ route('admin.extraction.pdf') }}" class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToVideo') ? 'bg-indigo-500 text-white' : '' }}">
+                        @if(request()->routeIs('admin.extraction.pdfToVideo'))
+                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full"></span>
+                        @endif
+                        <i class="fas fa-video mr-2"></i> PDF Extraction
+                    </a>
                     <a href="{{ route('admin.extraction.pdfToVideo') }}" class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToVideo') ? 'bg-indigo-500 text-white' : '' }}">
                         @if(request()->routeIs('admin.extraction.pdfToVideo'))
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full"></span>
@@ -130,21 +117,6 @@
                         <i class="fas fa-headphones-alt mr-2"></i> PDF to Audio
                     </a>
                 </div>
-            </li>
-            
-            <!-- Audit / Logging Module -->
-            <li>
-                <a href="{{ route('admin.users.audit') }}" 
-                   class="flex items-center px-4 py-3 text-white hover:bg-indigo-500 rounded-lg transition-colors group relative {{ request()->routeIs('admin.audit*') ? 'bg-indigo-500' : '' }}">
-                    <!-- Active Indicator -->
-                    @if(request()->routeIs('admin.audit*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></span>
-                    @endif
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-sm font-medium">Audit / Logging Module</span>
-                </a>
             </li>
         </ul>
     </div>
