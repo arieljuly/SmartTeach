@@ -50,7 +50,11 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/', [LessonPlanController::class, 'index'])->name('index');
         
     });
-
-
+    Route::get('/get-audio-text/{jobId}', [ExtractionController::class, 'getAudioText'])->name('get-audio-text');
+    Route::get('/pdf-to-audio/{lessonId?}', [ExtractionController::class, 'pdfToAudio'])->name('pdf-to-audio');
+    Route::get('/listening-session/{lessonId}', [ExtractionController::class, 'getListeningSession'])->name('listening-session');
+    Route::post('/generate-audio/{lessonId}/{type}', [ExtractionController::class, 'generateAudioType'])->name('generate-audio');
+    Route::post('/generate-all-audio/{lessonId}', [ExtractionController::class, 'generateAllAudio'])->name('generate-all-audio');
+    Route::get('/audio-status/{audioId}', [ExtractionController::class, 'getAudioStatus'])->name('audio-status');
     Route::get('/pdf/test-tokens/{lessonId}', [PdfExtractionController::class, 'testPdfTokens'])->name('pdf.test-tokens');
 });

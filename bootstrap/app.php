@@ -15,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
         ]);
+
     })
+    ->withCommands([
+        __DIR__.'/../app/Console/Commands', // This registers all commands in the Commands directory
+    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
