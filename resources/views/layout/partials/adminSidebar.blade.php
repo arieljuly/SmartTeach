@@ -75,9 +75,9 @@
             </li>
             
             <!-- Output Management Module (with submenu) -->
-            <li x-data="{ open: {{ request()->routeIs('admin.extraction.output*') ? 'true' : 'false' }} }" class="relative">
+            <li x-data="{ open: {{ request()->routeIs('admin.extraction.output*') || request()->routeIs('admin.pdf*') ? 'true' : 'false' }} }" class="relative">
                 <!-- Active Indicator for parent when any output route is active -->
-                @if(request()->routeIs('admin.extraction.output*'))
+                @if(request()->routeIs('admin.extraction.output*') || request()->routeIs('admin.pdf*'))
                 <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full z-10"></span>
                 @endif
                 <button @click="open = !open" 
@@ -87,30 +87,33 @@
                     </svg>
                     <span class="flex-1 text-sm font-medium text-left">Output Management</span>
                     <svg xmlns="http://www.w3.org/2000/svg" 
-                         class="h-4 w-4 transition-transform duration-200 text-indigo-200" 
-                         :class="{ 'rotate-180': open }" 
-                         fill="none" 
-                         viewBox="0 0 24 24" 
-                         stroke="currentColor">
+                        class="h-4 w-4 transition-transform duration-200 text-indigo-200" 
+                        :class="{ 'rotate-180': open }" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
                 
-                <!-- Output Management Submenu (PDF to Video & PDF to Audio only) -->
+                <!-- Output Management Submenu -->
                 <div x-show="open" x-transition class="pl-11 pr-2 mt-1 space-y-1">
-                    <a href="{{ route('admin.extraction.pdf') }}" class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToVideo') ? 'bg-indigo-500 text-white' : '' }}">
-                        @if(request()->routeIs('admin.extraction.pdfToVideo'))
+                    <a href="{{ route('admin.pdf.extraction') }}" 
+                    class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.pdf.extraction') ? 'bg-indigo-500 text-white' : '' }}">
+                        @if(request()->routeIs('admin.pdf.extraction'))
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full"></span>
                         @endif
-                        <i class="fas fa-video mr-2"></i> PDF Extraction
+                        <i class="fas fa-file-pdf mr-2"></i> PDF Extraction
                     </a>
-                    <a href="{{ route('admin.extraction.pdfToVideo') }}" class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToVideo') ? 'bg-indigo-500 text-white' : '' }}">
+                    <a href="{{ route('admin.extraction.pdfToVideo') }}" 
+                    class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToVideo') ? 'bg-indigo-500 text-white' : '' }}">
                         @if(request()->routeIs('admin.extraction.pdfToVideo'))
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full"></span>
                         @endif
                         <i class="fas fa-video mr-2"></i> PDF to Video
                     </a>
-                    <a href="{{ route('admin.extraction.pdfToAudio') }}" class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToAudio') ? 'bg-indigo-500 text-white' : '' }}">
+                    <a href="{{ route('admin.extraction.pdfToAudio') }}" 
+                    class="block px-4 py-2 text-sm text-indigo-100 hover:text-white hover:bg-indigo-500 rounded-lg relative {{ request()->routeIs('admin.extraction.pdfToAudio') ? 'bg-indigo-500 text-white' : '' }}">
                         @if(request()->routeIs('admin.extraction.pdfToAudio'))
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full"></span>
                         @endif

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('lesson_id');
             $table->string('topic_summary');
             $table->string('key_concepts');
+            $table->
             $table->timestamps();
         });
     }

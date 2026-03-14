@@ -34,15 +34,6 @@ class RoleMiddleware
             abort(500, 'Invalid role configuration.');
         }
         
-        // Debug logging
-        Log::info('Role check', [
-            'user_id' => $user->user_id,
-            'user_role_type' => gettype($user->role),
-            'user_role' => $user->role instanceof UserRole ? $user->role->value : $user->role,
-            'allowed_roles' => array_map(fn($r) => $r->value, $allowedRoles),
-            'has_role' => $user->hasAnyRole($allowedRoles)
-        ]);
-        
         // Check if user has any of the allowed roles
         if (!$user->hasAnyRole($allowedRoles)) {
             Log::warning('Unauthorized access attempt', [

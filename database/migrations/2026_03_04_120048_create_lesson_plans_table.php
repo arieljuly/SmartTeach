@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // for the teacher
             $table->string('file_name');
             $table->string('file_path');
-            $table->enum('status', ['upload', 'approved', 'rejected','archived','pending'])->default('pending');
+            $table->enum('status', ['upload', 'analyzed', 'complete','archived','pending'])->default('pending');
             $table->timestamps();
 
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
