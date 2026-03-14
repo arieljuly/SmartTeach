@@ -12,12 +12,19 @@ use App\Http\Controllers\{
 Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
     
-    // this is for the users
+    // User Management Routes
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'userAdministration'])->name('administration');
-        Route::get('/audit-logs', [UserController::class, 'auditLogs'])->name('audit');
-    });
+        Route::post('/', [UserController::class, 'storeUser'])->name('store');
+        Route::get('/{user}', [UserController::class, 'showUser'])->name('show'); 
+        Route::put('/{user}', [UserController::class, 'updateUser'])->name('update');
+        Route::patch('/{user}/archive', [UserController::class, 'archiveUser'])->name('archive');
+        Route::patch('/{user}/restore', [UserController::class, 'restoreUser'])->name('restore');
 
+        // Audit Logs
+        Route::get('/audit-logs', [UserController::class, 'auditLogs'])->name('audit');
+        Route::get('/audit-logs/{user}', [UserController::class, 'showAuditLog'])->name('audit.show');
+    });
     // this is for the ai processing
     Route::prefix('AI')->name('ai.')->group(function () {
         Route::get('/', [AIModuleController::class, 'index'])->name('aiProcess');

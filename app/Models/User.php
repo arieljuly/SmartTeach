@@ -22,6 +22,7 @@ class User extends Authenticatable
         'google_id',
         'avatar',
         'role',
+        'status', // Add status to fillable
         'email_verified_at',
     ];
 
@@ -32,8 +33,24 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'role' => UserRole::class, // This casts the role to UserRole enum
+        'role' => UserRole::class,
     ];
+
+    /**
+     * Check if user is active
+     */
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    /**
+     * Check if user is archived
+     */
+    public function isArchived(): bool
+    {
+        return $this->status === 'archived';
+    }
 
     /**
      * Check if user has any of the given roles
@@ -41,7 +58,6 @@ class User extends Authenticatable
     public function hasAnyRole(array $roles): bool
     {
         foreach ($roles as $role) {
-            // If $role is a UserRole enum, compare with $this->role (which is also a UserRole enum)
             if ($this->role === $role) {
                 return true;
             }
